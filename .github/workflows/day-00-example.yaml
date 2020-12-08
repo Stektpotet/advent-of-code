@@ -3,6 +3,7 @@ on:
   push:
     branches:
       - main
+      - 'lang/**'
     paths:
       - 'days/day-00-example/**'
       - 'languages/**'

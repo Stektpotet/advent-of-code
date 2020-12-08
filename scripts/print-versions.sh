@@ -51,3 +51,7 @@ echo ""
 echo "$ zig version"
 zig version
 echo ""
+
+echo "$ swipl --version"
+swipl --version
+echo ""

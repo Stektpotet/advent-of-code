@@ -28,7 +28,12 @@ RUN curl -sL https://deb.nodesource.com/setup_15.x | bash -
 # 6. Install deno.js run-time from deno.land
 RUN curl -fsSL https://deno.land/x/install/install.sh | sh && cp ~/.deno/bin/deno /bin/
 
-# 7. Install all other compilers, from apt-get
+# 7. Install SWI-Prolog
+RUN apt-add-repository ppa:swi-prolog/stable && apt-get update \
+  #install prolog, afterwards remove the PPA (we don't need it anymore)
+  && sudo apt-get install swi-prolog && add-apt-repository –remove ppa:swi-prolog/stable
+
+# 8. Install all other compilers, from apt-get
 RUN apt-get update && apt-get install -yqq --no-install-recommends\
     default-jdk golang nodejs php-cli python3 ruby rustc \
   # Cleanup what we don't need
