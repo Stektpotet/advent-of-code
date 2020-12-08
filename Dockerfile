@@ -30,9 +30,9 @@ RUN curl -fsSL https://deno.land/x/install/install.sh | sh && cp ~/.deno/bin/den
 
 # 7. Install SWI-Prolog
 RUN apt-get update && apt-get install -y software-properties-common \ 
-  && apt-add-repository ppa:swi-prolog/stable && apt-get update && sudo apt-get install swi-prolog \
+  && apt-add-repository ppa:swi-prolog/stable && apt-get update && apt-get -y install swi-prolog \
   #afterwards remove the PPA (we don't need it anymore)
-  && add-apt-repository –remove ppa:swi-prolog/stable && sudo apt-get remove --auto-remove software-properties-common
+  && add-apt-repository --remove ppa:swi-prolog/stable && apt-get remove --auto-remove -y software-properties-common
 
 # 8. Install all other compilers, from apt-get
 RUN apt-get update && apt-get install -yqq --no-install-recommends\
