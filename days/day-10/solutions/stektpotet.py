@@ -1,6 +1,5 @@
 import fileinput
 
-
 sorted_bag = sorted(int(n) for n in fileinput.input())
 sorted_bag.append(sorted_bag[-1] + 3)  # add the last step
 # ========== TASK 1 ==========
