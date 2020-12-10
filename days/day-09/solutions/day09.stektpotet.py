@@ -23,13 +23,3 @@ if __name__ == '__main__':
             elif s == magic_number:
                 print(r_min + r_max)
                 exit(0)
-
-    # b = [lines[i + 25] for i, f in enumerate(
-    #     not any(s == lines[p + 25] for s in map(sum, itertools.combinations(lines[p: p + 25], 2))) for p in
-    #     range(len(lines) - 26)) if f][0]
-
-
-    # print(*(min(a) + max(a) for a in
-    #         [lines[i: j] for i in range(len(lines)) for j in range(i + 2, len(lines) + 1) if sum(lines[i: j]) == b]
-    #         ))
-    #
