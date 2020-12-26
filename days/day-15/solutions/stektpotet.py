@@ -1,7 +1,8 @@
-from sys import stdin
-
+import fileinput
+# 1015
+#  201
 if __name__ == '__main__':
-    nums = [int(i) for i in stdin.read().split('\n')[:-1]]
+    nums = [int(i) for i in fileinput.input()]
     mem = {v: time for time, v in enumerate(nums[:-1])}
     last = nums[-1]
 
