@@ -1,7 +1,7 @@
 from sys import stdin
 
 if __name__ == '__main__':
-    nums = [int(i) for i in stdin.read().split(',')]
+    nums = [int(i) for i in stdin.read().split('\n')[:-1]]
     mem = {v: time for time, v in enumerate(nums[:-1])}
     last = nums[-1]
 
