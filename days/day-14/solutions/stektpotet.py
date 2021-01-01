@@ -1,70 +1,46 @@
-import itertools
 import sys
-from functools import reduce
-from operator import mul
-from math import gcd
+import itertools
 
-from tqdm import tqdm
+ip = "mask = 000000000000000000000000000000X1001X\nmem[42] = 100\nmask = 00000000000000000000000000000000X0XX\nmem[26] = 1".split(
+    '\n')
+# ip = sys.stdin.read().split('\n')[:-1]
+print(ip[-1])
 
-if __name__ == '__main__':
+instructions = []
+current_mask = "XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX"
+for s in ip:
+    print(s)
+    if s[1] == 'a':
+        current_stack = []
+        current_mask = s.split()[-1]
+        instructions.append((current_mask, current_stack))
+        print(current_mask)
+    else:
+        current_stack.append((f"{int(s.split(']')[0][4:]):036b}", f"{int(s.split('=')[-1]):036b}"))
+print()
+print(instructions)
+print()
 
-    def find_gcd(x, y):
+mem = dict()
+for m, ops in instructions:
+    for pos, v in ops:
+        xs = []
+        addr = [c for c in m]
+        for i, p in enumerate(pos):
+            if m[i] == '0':
+                addr[i] = p
+            elif m[i] == 'X':
+                xs.append(i)
+        print(''.join(addr))
+        addrs = []
+        for p in itertools.product('01', repeat=len(xs)):
+            for i, xi in enumerate(xs):
+                addr[xi] = p[i]
+            addrs.append(int(''.join(addr), 2))
 
-        while (y):
-            x, y = y, x % y
+        for a in addrs:
+            mem[a] = int(v, 2)
+        print(pos, int(pos, 2), addrs)
+        print()
 
-        return x
-
-
-
-    ip="939\n7,13,x,x,59,x,31,19".split()
-    ip=sys.stdin.read().split()
-    ts=int(ip[0])
-    print(ip)
-    ids={i: int(k) for i, k in enumerate(ip[1].split(',')) if k.isnumeric()}
-    print(ids)
-
-    q = sorted(ids.items(), key=lambda k: -k[1])
-    print(q[0])
-    s = ids[0]
-    # qs = 100000000000000
-    # print([k*(qs//k) for j, k in ids.items()])
-
-    print(reduce(mul, list(ids.values())[0:-1], 1))
-    # ids=list(ids.items())[1:]
-    print([(k, j, (1068781 + j)//k) for j, k in q])
-    #
-    # print((q[1]*5+q[0])%q[1])
-    # 100000000000000
-    #     52910000000
-    o = ids.values()
-    num1 = o[0]
-    num2 = o[1]
-    gcd = find_gcd(num1, num2)
-
-    for i in range(2, len(o)):
-        gcd = find_gcd(gcd, o[i])
-    print(gcd)
-    exit()
-    for i in itertools.count(start=s, step=s):
-        f=True
-        for j, k in ids:
-            if (k-i) % k != j:
-                f = False
-                break
-
-        if i % (s*10000000) == 0:
-            print('step', i)
-
-        if f:
-            print(i)
-            break
-
-    exit(0)
-    a=1068781
-    ##1068781
-
-    for j, k in list(ids.items())[1:]:
-        print(k, k-a%k, j)
-        if k-a%k != j:
-            print('fail')
+print(sum(mem.values()))
