@@ -4,10 +4,11 @@ import fileinput
 
 if __name__ == '__main__':
     instructions = [(l[0], int(l[1:])) for l in fileinput.input()]
+
+    # =================================================== Part 1 ===================================================
     p = [0, 0]
     headings = "ENWS"
     heading = 'E'
-
 
     def north(n):
         p[1] += n
@@ -17,7 +18,7 @@ if __name__ == '__main__':
         global heading
         heading = headings[(headings.find(heading) + n // 90) % 4]
 
-    m = {
+    m = {   # this is pretty neat
         'N': lambda n: north(n),
         'S': lambda n: north(-n),
         'E': lambda n: east(n),
@@ -27,13 +28,17 @@ if __name__ == '__main__':
         'F': lambda n: m[heading](n)
     }
 
-    for i, n in instructions:
-        print(i, n)
-        m[i](n)
-        print(heading, p, abs(p[0])+abs(p[1]))
+    any(m[i](n) for i, n in instructions)  # hacky way to consume the void generator
+    print(abs(p[0]) + abs(p[1]))
+
+    # =================================================== Part 2 ===================================================
 
     w_p = [10, 1]
     p = [0, 0]
+
+    def move(n):
+        p[0] += w_p[0] * n
+        p[1] += w_p[1] * n
     def w_north(n):
         w_p[1] += n
     def w_east(n):
@@ -50,12 +55,6 @@ if __name__ == '__main__':
             w_p[0] = d[1]
             w_p[1] = -d[0]
 
-    def move(n):
-        p[0] += w_p[0] * n
-        p[1] += w_p[1] * n
-
-    print("====================================================\n====================================================")
-
     m = {
         'N': lambda n: w_north(n),
         'S': lambda n: w_north(-n),
@@ -66,7 +65,5 @@ if __name__ == '__main__':
         'F': lambda n: move(n)
     }
 
-    for i, n in instructions:
-        print(i, n)
-        m[i](n)
-        print(heading, p, w_p, abs(p[0]) + abs(p[1]))
+    any(m[i](n) for i, n in instructions)  # hacky way to consume the void generator
+    print(abs(p[0]) + abs(p[1]))
