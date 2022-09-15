@@ -2,31 +2,36 @@ name: examples
 on:
   push:
     branches:
-      - main
+    - main
     paths:
-      - '.github/workflows/examples.yaml'
-      - 'lang/**'
-      - 'lib/**'
-      - 'examples/**'
+    - '.github/workflows/examples.yaml'
+    - 'lang/**'
+    - 'lib/**'
+    - 'examples/**'
   pull_request:
     branches:
-      - main
+    - main
     paths:
-      - '.github/workflows/examples.yaml'
-      - 'lang/**'
-      - 'lib/**'
-      - 'examples/**'
+    - '.github/workflows/examples.yaml'
+    - 'lang/**'
+    - 'lib/**'
+    - 'examples/**'
   workflow_dispatch:
-
 jobs:
-  examples:
+  fetch_latest_container:
     runs-on: ubuntu-latest
-    container:
-      image: jonasjso/adventofcode2020:2021-12-04-with-kotlin-1.5.32-take3
+    outputs:
+      image: ${{ steps.lowercase_repo.outputs.image_name }}
     steps:
-      - uses: actions/checkout@v2
-      - name: running ./scripts/print-versions.sh
-        run: ./scripts/print-versions.sh
-      - name: running ./examples/test.sh
-        run: ./examples/test.sh
-
+      - id: lowercase_repo
+        run: echo "::set-output name=image_name::${GITHUB_REPOSITORY,,}"
+  examples:
+    needs: fetch_latest_container
+    runs-on: ubuntu-latest
+    container: ghcr.io/${{ needs.fetch_latest_container.outputs.repo }}:latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: running ./scripts/print-versions.sh
+      run: ./scripts/print-versions.sh
+    - name: running ./examples/test.sh
+      run: ./examples/test.sh

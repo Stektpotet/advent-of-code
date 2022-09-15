@@ -1,0 +1,21 @@
+name: 'AOC Day Evaluation Run'
+description: 'Run through all solutions for an AOC day'
+inputs:
+  year:
+    description: 'which year'
+    required: true
+    default: 2020
+  day:  # id of input
+    description: 'which day, 01-25th'
+    required: true
+    default: 'day01'
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v2
+    - name: running ./scripts/print-versions.sh
+      run: ./scripts/print-versions.sh
+      shell: bash
+    - name: running ./${{ inputs.year }}/${{ inputs.day }}/test.sh
+      run: ./${{ inputs.year }}/${{ inputs.day }}/test.sh
+      shell: bash
