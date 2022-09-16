@@ -25,11 +25,11 @@ RUN curl -fsSL https://deno.land/x/install/install.sh | sh -s v1.16.4\
     && rm -rf ~/.deno/*
 
 # 6. Install zig compiler, from ziglang.org
-RUN cd /tmp && wget https://ziglang.org/builds/zig-linux-x86_64-0.10.0-dev.3999+fda6d4477.tar.xz\
-  && tar xf zig-linux-x86_64-0.10.0-dev.3999+fda6d4477.tar.xz\
+RUN cd /tmp && wget https://ziglang.org/download/0.9.1/zig-linux-x86_64-0.9.1.tar.xz\
+  && tar xf zig-linux-x86_64-0.9.1.tar.xz\
   && mkdir -p /bin/lib\
-  && cp "zig-linux-x86_64-0.10.0-dev.3999+fda6d4477/zig" /bin/\
-  && cp -ru zig-linux-x86_64-0.10.0-dev.3999+fda6d4477/lib/* /bin/lib/\
+  && cp "zig-linux-x86_64-0.9.1/zig" /bin/\
+  && cp -ru zig-linux-x86_64-0.9.1/lib/* /bin/lib/\
   && chmod ugo+x /bin/zig\
   && rm -rf /tmp/*
 

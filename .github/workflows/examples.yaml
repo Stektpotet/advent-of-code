@@ -28,9 +28,9 @@ jobs:
   examples:
     needs: fetch_latest_container
     runs-on: ubuntu-latest
-    container: ghcr.io/${{ needs.fetch_latest_container.outputs.repo }}:latest
+    container: ghcr.io/${{ needs.fetch_latest_container.outputs.image }}:latest
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v3
     - name: running ./scripts/print-versions.sh
       run: ./scripts/print-versions.sh
     - name: running ./examples/test.sh

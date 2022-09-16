@@ -24,23 +24,29 @@ on:
       - '2020/**/solutions/**'
 
 jobs:
-  fetch_latest_container:
+  get_latest_image_and_solutions:
     runs-on: ubuntu-latest
     outputs:
       image: ${{ steps.lowercase_repo.outputs.image_name }}
+      matrix: ${{ steps.get_days.outputs.matrix }}
     steps:
+      - uses: actions/checkout@v3
       - id: lowercase_repo
         run: echo "::set-output name=image_name::${GITHUB_REPOSITORY,,}"
+      - id: get_days
+        run: |
+          JSON=$(./scripts/days-with-solutions.sh 2020)
+          echo "::set-output name=matrix::${JSON//'%'/'%25'}"
+
   days:
-    needs: fetch_latest_container
+    needs: get_latest_image_and_solutions
     runs-on: ubuntu-latest
-    container: ghcr.io/${{ needs.fetch_latest_container.outputs.image }}:latest
+    container: ghcr.io/${{ needs.get_latest_image_and_solutions.outputs.image }}:latest
     strategy:
-      matrix:
-        day: [day01, day02, day03, day04, day05, day06, day07, day08, day09, day10, day11, day12, day13, day14, day15, day16, day17, day18, day19, day20, day21, day22, day23, day24, day25]
+      matrix: ${{ fromJSON(needs.get_latest_image_and_solutions.outputs.matrix) }}
     steps:
-      - name: Run ${{ matrix.day }}
-      - uses: ./.github/actions/run_day
-        with:
-          year: 2020
-          day: ${{ matrix.day }}
+      - uses: actions/checkout@v3
+      - name: running ./scripts/print-versions.sh
+        run: ./scripts/print-versions.sh
+      - name: running ./2020/${{ matrix.day }}/test.sh
+        run: ./2020/${{ matrix.day }}/test.sh
