@@ -35,4 +35,3 @@ jobs:
         docker push ghcr.io/${{ env.REPO }}:2021
         docker tag ghcr.io/${{ env.REPO }}:${{ github.sha }} ghcr.io/${{ env.REPO }}:latest
         docker push ghcr.io/${{ env.REPO }}:latest
-
